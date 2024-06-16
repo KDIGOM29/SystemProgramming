@@ -47,8 +47,8 @@ void* t_dc_motor(void* arg) {
     
     if(f_b == 0){
         printf("전진\n");
-        digitalWrite(IN1, LOW);
-        digitalWrite(IN2, HIGH);
+        digitalWrite(IN1, HIGH);
+        digitalWrite(IN2, LOW);
         softPwmWrite(ENA, 100);
 
         delay(3000);
