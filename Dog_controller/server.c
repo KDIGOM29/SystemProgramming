@@ -21,7 +21,6 @@
 #define PIN 17 //button1 for bark
 #define PIN2 18 //button2 for moving foward
 #define PIN3 27 //button3 for moving backward
-#define POUT 21
 
 void error_handling(char *message) {
   fputs(message, stderr);
@@ -115,7 +114,7 @@ static int GPIOWrite(int pin, int value) {
 }
 
 int main(int argc, char *argv[]) {
-  int state = 1;
+  int state = 1;       //3 state for 3 button
   int prev_state = 1;
   int state2 = 1;
   int prev_state2 = 1;
@@ -168,8 +167,7 @@ int main(int argc, char *argv[]) {
   printf("Connection established\n");
 
   while (1) {
-    state = GPIORead(PIN);
-
+    state = GPIORead(PIN);    //button 1
     if (prev_state == 0 && state == 1) {
       snprintf(msg, 2, "%s", "CHECK1");
       write(clnt_sock, msg, sizeof(msg));
@@ -179,7 +177,7 @@ int main(int argc, char *argv[]) {
     prev_state = state;
     usleep(500 * 100);
     
-    state2 =GPIORead(PIN2);
+    state2 =GPIORead(PIN2);    //button 2
     if (prev_state2 == 0 && state2 == 1) {
       snprintf(msg, 2, "%s", "CHECK2");
       write(clnt_sock, msg, sizeof(msg));
@@ -189,7 +187,7 @@ int main(int argc, char *argv[]) {
     prev_state2 = state2;
     usleep(500 * 100);
     
-    state3 =GPIORead(PIN3);
+    state3 =GPIORead(PIN3);    //button3
     if (prev_state3 == 0 && state3 == 1) {
       snprintf(msg, 2, "%s", "CHECK3");
       write(clnt_sock, msg, sizeof(msg));
