@@ -169,8 +169,8 @@ int main(int argc, char *argv[]) {
   while (1) {
     state = GPIORead(PIN);    //button 1
     if (prev_state == 0 && state == 1) {
-      snprintf(msg, 2, "%s", "CHECK1");
-      write(clnt_sock, msg, sizeof(msg));
+      snprintf(msg, 10, "%s", "CHECK1");  // buffer msg check1
+      write(clnt_sock, msg, sizeof(msg));   //send to client
       printf("msg = %s\n", msg);
     }
 
@@ -179,8 +179,8 @@ int main(int argc, char *argv[]) {
     
     state2 =GPIORead(PIN2);    //button 2
     if (prev_state2 == 0 && state2 == 1) {
-      snprintf(msg, 2, "%s", "CHECK2");
-      write(clnt_sock, msg, sizeof(msg));
+      snprintf(msg, 10, "%s", "CHECK2");  // buffer msg check2
+      write(clnt_sock, msg, sizeof(msg));  //send to client
       printf("msg = %s\n", msg);
     }
 
@@ -189,8 +189,8 @@ int main(int argc, char *argv[]) {
     
     state3 =GPIORead(PIN3);    //button3
     if (prev_state3 == 0 && state3 == 1) {
-      snprintf(msg, 2, "%s", "CHECK3");
-      write(clnt_sock, msg, sizeof(msg));
+      snprintf(msg, 10, "%s", "CHECK3");  // buffer msg check3
+      write(clnt_sock, msg, sizeof(msg));  //send to client
       printf("msg = %s\n", msg);
     }
 
