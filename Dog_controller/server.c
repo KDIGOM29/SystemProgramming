@@ -18,9 +18,11 @@
 #define LOW 0
 #define HIGH 1
 
-#define PIN 17 //button1 for bark
-#define PIN2 18 //button2 for moving foward
-#define PIN3 27 //button3 for moving backward
+#define PIN1 17 //used for button1 
+#define PIN2 18 //used for button2 
+#define PIN3 27 //used for button3 
+
+#define POUT 21
 
 void error_handling(char *message) {
   fputs(message, stderr);
@@ -114,8 +116,8 @@ static int GPIOWrite(int pin, int value) {
 }
 
 int main(int argc, char *argv[]) {
-  int state = 1;       //3 state for 3 button
-  int prev_state = 1;
+  int state1 = 1;       //3 state for 3 button
+  int prev_state1 = 1;
   int state2 = 1;
   int prev_state2 = 1;
   int state3 = 1;
@@ -131,11 +133,11 @@ int main(int argc, char *argv[]) {
   }
 
   // Enable GPIO pins
-  if (-1 == GPIOExport(PIN) || -1 == GPIOExport(POUT)) return (1);
+  if (-1 == GPIOExport(PIN1) || -1 == GPIOExport(POUT)) return (1);
   if (-1 == GPIOExport(PIN2) || -1 == GPIOExport(POUT)) return (1);
   if (-1 == GPIOExport(PIN3) || -1 == GPIOExport(POUT)) return (1);
   // Set GPIO directions
-  if (-1 == GPIODirection(PIN, IN) || -1 == GPIODirection(POUT, OUT))
+  if (-1 == GPIODirection(PIN1, IN) || -1 == GPIODirection(POUT, OUT))
     return (2);
   if (-1 == GPIODirection(PIN2, IN) || -1 == GPIODirection(POUT, OUT))
     return (2);
@@ -167,17 +169,17 @@ int main(int argc, char *argv[]) {
   printf("Connection established\n");
 
   while (1) {
-    state = GPIORead(PIN);    //button 1
-    if (prev_state == 0 && state == 1) {
+    state = GPIORead(PIN1);    //button 1 for bark
+    if (prev_state1 == 0 && state1 == 1) {
       snprintf(msg, 10, "%s", "CHECK1");  // buffer msg check1
       write(clnt_sock, msg, sizeof(msg));   //send to client
       printf("msg = %s\n", msg);
     }
 
-    prev_state = state;
+    prev_state1 = state1;
     usleep(500 * 100);
     
-    state2 =GPIORead(PIN2);    //button 2
+    state2 =GPIORead(PIN2);    //button 2 for moving foward
     if (prev_state2 == 0 && state2 == 1) {
       snprintf(msg, 10, "%s", "CHECK2");  // buffer msg check2
       write(clnt_sock, msg, sizeof(msg));  //send to client
@@ -187,7 +189,7 @@ int main(int argc, char *argv[]) {
     prev_state2 = state2;
     usleep(500 * 100);
     
-    state3 =GPIORead(PIN3);    //button3
+    state3 =GPIORead(PIN3);    //button3 for moving backward
     if (prev_state3 == 0 && state3 == 1) {
       snprintf(msg, 10, "%s", "CHECK3");  // buffer msg check3
       write(clnt_sock, msg, sizeof(msg));  //send to client
