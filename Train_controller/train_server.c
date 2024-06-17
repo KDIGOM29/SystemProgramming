@@ -121,7 +121,7 @@ int main(int argc, char *argv[]) {
   int state2 = 1, prev_state2 = 1;
   int state3 = 1, prev_state3 = 1;
   int state4 = 1, prev_state4 = 1;
-  int state5 = 1, prev_state5 = 15;
+  int state5 = 1, prev_state5 = 1;
 
   int serv_sock, clnt_sock = -1;
   struct sockaddr_in serv_addr, clnt_addr;
