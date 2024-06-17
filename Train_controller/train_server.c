@@ -170,14 +170,20 @@ int main(int argc, char *argv[]) {
     state = GPIORead(PIN); //버튼 1의 변화 감지
     if (prev_state == 0 && state == 1) {
       snprintf(msg, 10, "%s", "CHECK1"); // 멈춰 모드 메세지 전송
-      write(clnt_sock, msg, sizeof(msg));
+      if (write(clnt_sock, msg, sizeof(msg)) == -1) { //전송실패 예외처리
+        fprintf("write() error");
+        break;
+      }
       printf("msg = %s\n", msg);
 
       snprintf(msg, 10, "%s", "");
 
       while(1){ //클라이언트로부터 간식(snackk) 메세지를 받을 때까지 대기
       char msg2[10];
-        read(clnt_sock, msg2, sizeof(msg2));
+        if (read(clnt_sock, msg2, sizeof(msg2)) == -1) { //메세지 수신 예외처리
+          fprintf("read() error");
+          break;
+        }
         printf("%s\n", msg2);
         size_t len = strlen(msg2);
         if (msg2[0] == 's' && msg2[1] =='n') {
@@ -197,7 +203,10 @@ int main(int argc, char *argv[]) {
     state2 = GPIORead(PIN2); //버튼2의 변화를 감지
     if (prev_state2 == 0 && state2 == 1) {
       snprintf(msg, 10, "%s", "CHECK2"); //놀이모드
-      write(clnt_sock, msg, sizeof(msg));
+      if (write(clnt_sock, msg, sizeof(msg)) == -1) { 
+        fprintf("write() error");
+        break;
+      }
       printf("msg = %s\n", msg);
     }
     prev_state2 = state2;
@@ -206,7 +215,10 @@ int main(int argc, char *argv[]) {
     state3 = GPIORead(PIN3); //버튼3의 변화를 감지 
     if (prev_state3 == 0 && state3 == 1) {
       snprintf(msg, 10, "%s", "CHECK3"); //앞으로 이동
-      write(clnt_sock, msg, sizeof(msg));
+      if (write(clnt_sock, msg, sizeof(msg)) == -1) {
+        fprintf("write() error");
+        break;
+      }
       printf("msg = %s\n", msg);
       fd = wiringPiI2CSetup(I2C_ADDR);
       lcd_init(); // LCD 초기화
@@ -219,7 +231,10 @@ int main(int argc, char *argv[]) {
     state4 = GPIORead(PIN4); //버튼4의 변화를 감지 //뒤로이동
     if (prev_state4 == 0 && state4 == 1) {
       snprintf(msg, 10, "%s", "CHECK4"); //뒤로 이동
-      write(clnt_sock, msg, sizeof(msg));
+      if (write(clnt_sock, msg, sizeof(msg)) == -1) {
+        fprintf("write() error");
+        break;
+      }
       printf("msg = %s\n", msg);
       fd = wiringPiI2CSetup(I2C_ADDR);
       lcd_init(); 
@@ -232,7 +247,10 @@ int main(int argc, char *argv[]) {
     state5 = GPIORead(PIN5); //버튼5의 변화를 감지
       if (prev_state5 == 0 && state5 == 1) {
         snprintf(msg, 10, "%s", "CHECK5"); //카메라
-        write(clnt_sock, msg, sizeof(msg));
+        if (write(clnt_sock, msg, sizeof(msg)) == -1) { //전송실패 예외처리
+        fprintf("write() error");
+        break;
+      }
         printf("msg = %s\n", msg);
         fd = wiringPiI2CSetup(I2C_ADDR);
         lcd_init();
